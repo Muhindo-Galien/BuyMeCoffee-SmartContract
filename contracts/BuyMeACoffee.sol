@@ -1,9 +1,12 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.7;
 
-// Example deployed to Goerli: 0xDBa03676a2fBb6711CB652beF5B7416A53c1421D
+error BuyMeACoffee__NotOwner();
+
 
 contract BuyMeACoffee {
+
+ 
     // Event to emit when a Memo is created.
     event NewMemo(
         address indexed from,
@@ -27,6 +30,13 @@ contract BuyMeACoffee {
     // List of all memos received from coffee purchases.
     Memo[] memos;
 
+     // Modifiers
+    modifier onlyOwner() {
+        // require(msg.sender == i_owner);
+        if (msg.sender != owner) revert BuyMeACoffee__NotOwner();
+        _;
+    }
+
     constructor() {
         // Store the address of the deployer as a payable address.
         // When we withdraw funds, we'll withdraw here.
@@ -38,6 +48,10 @@ contract BuyMeACoffee {
      */
     function getMemos() public view returns (Memo[] memory) {
         return memos;
+    }
+
+    function getBalanceAccount() public view returns (uint256){
+        return msg.sender.balance;
     }
 
     /**
@@ -69,7 +83,7 @@ contract BuyMeACoffee {
     /**
      * @dev send the entire balance stored in this contract to the owner
      */
-    function withdrawTips() public {
+    function withdrawTips() public onlyOwner{
         require(owner.send(address(this).balance));
     }
 }

@@ -28,7 +28,7 @@ async function printMemos(memos) {
 
 async function main() {
   // Get the example accounts we'll be working with.
-  const [owner, tipper, tipper2, tipper3,tipper4] = await hre.ethers.getSigners();
+  const [owner, tipper, tipper2, tipper3] = await hre.ethers.getSigners();
 
   // We get the contract to deploy.
   const BuyMeACoffee = await hre.ethers.getContractFactory("BuyMeACoffee");
@@ -44,11 +44,10 @@ async function main() {
   await printBalances(addresses);
 
   // Buy the owner a few coffees.
-  const tip = {value: hre.ethers.utils.parseEther("1")};
-  await buyMeACoffee.connect(tipper).buyCoffee("Zzisign", "You're are a king!", tip);
-  await buyMeACoffee.connect(tipper2).buyCoffee("Razac", "Inspiring developer", tip);
-  await buyMeACoffee.connect(tipper3).buyCoffee("Joe", "great content", tip);
-  await buyMeACoffee.connect(tipper4).buyCoffee("Cesko", "I love my Proof of Knowledge", tip);
+  const tip = {value: hre.ethers.utils.parseEther("0.001")};
+  await buyMeACoffee.connect(tipper).buyCoffee("Zzisign", "Never top doing crazy things", tip);
+  await buyMeACoffee.connect(tipper2).buyCoffee("Razack", "Keep goin'", tip);
+  await buyMeACoffee.connect(tipper3).buyCoffee("Joe", "You're a king", tip);
 
   // Check balances after the coffee purchase.
   console.log("== bought coffee ==");
